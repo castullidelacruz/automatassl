@@ -31,7 +31,7 @@ int main(void) {
         procesarPunto1();
     } else if (opcion == 2) {
         char expresion[100];
-        printf("Ingresa una expresión matemática: ");
+        printf("Ingresa una expresion matematica: ");
         fgets(expresion, sizeof(expresion), stdin);
         expresion[strcspn(expresion, "\n")] = '\0';
 
@@ -40,12 +40,12 @@ int main(void) {
         
         if (esValida) {
             int resultado = evaluarExpresion(expresion);
-            printf("El resultado de la expresión es: %d\n", resultado);
+            printf("El resultado de la expresion es: %d\n", resultado);
         } else {
-            printf("La expresión matemática ingresada no es válida\n");
+            printf("La expresion matematica ingresada no es valida\n");
         }
     } else {
-        printf("Opción incorrecta\n");
+        printf("Opcion incorrecta\n");
     }
 
     return 0;
@@ -165,8 +165,8 @@ int esExpresionMatematica(const char* expresion) {
             tieneOperador = 1;
         } 
         // Si el carácter no es ni número ni operador, es inválido
-        else {
-            return 0; // Caracter no válido
+        else if (c != ' ') {
+            return 0; // Caracter no válido (espacios son permitidos)
         }
         i++;
     }
@@ -174,28 +174,21 @@ int esExpresionMatematica(const char* expresion) {
     // La expresión debe terminar con un número, no un operador
     return tieneNumero; 
 }
-
-
-// Evaluar una expresión matemática
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
+// Evaluar una expresión matemática respetando la precedencia de operadores
 int evaluarExpresion(const char* expresion) {
     int longitud = strlen(expresion);
     int numeros[100]; // Array para almacenar números
     char operadores[100]; // Array para almacenar operadores
     int numIndex = 0, opIndex = 0;
     int numero = 0;
-    char operador = '+';
+    char operador = '+'; // Operador inicial
 
-    // Evaluación de * y / primero
+    // Paso 1: Evaluar * y / primero (multiplicación y división)
     for (int i = 0; i < longitud; i++) {
         char c = expresion[i];
 
         if (isdigit(c)) {
-            numero = numero * 10 + (c - '0');
+            numero = numero * 10 + (c - '0'); // Construir número
         }
 
         // Cuando encontramos un operador o llegamos al final
@@ -205,13 +198,13 @@ int evaluarExpresion(const char* expresion) {
             } else if (operador == '-') {
                 numeros[numIndex++] = -numero;
             } else if (operador == '*') {
-                numeros[numIndex - 1] *= numero;
+                numeros[numIndex - 1] *= numero; // Resolver multiplicación
             } else if (operador == '/') {
                 if (numero == 0) {
                     printf("Error: División por cero\n");
                     return 0;
                 }
-                numeros[numIndex - 1] /= numero;
+                numeros[numIndex - 1] /= numero; // Resolver división
             }
 
             operador = c;
@@ -219,10 +212,10 @@ int evaluarExpresion(const char* expresion) {
         }
     }
 
-    // Ahora procesamos + y -
+    // Paso 2: Resolver + y - (suma y resta)
     int resultado = 0;
     for (int i = 0; i < numIndex; i++) {
-        resultado += numeros[i];
+        resultado += numeros[i]; // Sumar o restar los resultados
     }
 
     return resultado;
