@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-
-// ER: ([1-9][0-9]* | 0(\.[0-9]+)?) | 0([0-7]+) | 0[xX]([0-9a-fA-F]+)
+#include <stdlib.h>
 
 int cantidadDecimales = 0;
 int cantidadOctales = 0;
@@ -13,6 +12,7 @@ int verificarCadenaVacia(char* s);
 int esPalabra(const char* palabra);
 int imprimirCantidad();
 int convertirCaracter(char c);
+void mostrarCaracterConvertido();
 void procesarPunto1();
 void procesarPunto3();
 
@@ -21,6 +21,7 @@ int main(void) {
 
     printf("Ingresar 1 para procesar cadenas (punto 1)\n");
     printf("Ingresar 2 para procesar una expresion matematica (punto 3)\n");
+    printf("Ingresar 3 para convertir un caracter (punto 2)\n");
     scanf("%d", &opcion);
     getchar(); // Limpiar el buffer
 
@@ -28,6 +29,8 @@ int main(void) {
         procesarPunto1();
     } else if (opcion == 2) {
         procesarPunto3();
+    } else if (opcion == 3) {
+        mostrarCaracterConvertido();
     } else {
         printf("Opcion incorrecta\n");
     }
@@ -86,7 +89,6 @@ int imprimirCantidad(){
 	printf("La cantidad de hexadecimales es: %i \n", cantidadHexa);
 }
 
-
 int verificarCadenaVacia(char* s){
     if (s[0] == '\0') {
         printf("No es una cadena valida! \n");
@@ -95,11 +97,9 @@ int verificarCadenaVacia(char* s){
 	return 1;
 }
 
-
 int verifica(char* s)
 {
     verificarCadenaVacia(s);
-
 
     if (s[0] == '0' && (s[1] == 'x' || s[1] == 'X')) {
 
@@ -257,14 +257,21 @@ int esPalabra(const char* palabra)
 
 }
 
-void mostrarCaracterConvertido(char c) {
-    int entero = convertirCaracter(c);
-    printf("El carácter '%c' convertido es: %d\n", c, entero);
+void mostrarCaracterConvertido() {
+    char c;
+    int entero;
+
+    printf("Ingresar el caracter a convertir\n");
+    scanf("%c", &c);
+    entero = convertirCaracter(c);
+
+    printf("El caracter '%c' convertido es: %d\n", c, entero);
 }
 
 int convertirCaracter(char c) {
     return c - '0';
 }
+
 
 #include <stdlib.h>
 
@@ -288,7 +295,7 @@ int realizarOperacion(int operando1, int operando2, char operador) {
         case '*': return operando1 * operando2;
         case '/': 
             if (operando2 == 0) {
-                printf("Error: División por cero.\n");
+                printf("Error: Division por cero.\n");
                 exit(EXIT_FAILURE);
             }
             return operando1 / operando2;
@@ -354,7 +361,7 @@ void procesarPunto3() {
     getchar(); // Limpiar el buffer
 
     if (opcion == 1) {
-        printf("Ingresa una expresión matemática: ");
+        printf("Ingresa una expresion matematica: ");
         fgets(expresion, sizeof(expresion), stdin);
         expresion[strcspn(expresion, "\n")] = '\0'; // Eliminar salto de línea
 
@@ -370,7 +377,7 @@ void procesarPunto3() {
         while (fgets(expresion, sizeof(expresion), f) != NULL) {
             expresion[strcspn(expresion, "\n")] = '\0'; // Eliminar salto de línea
             int resultado = evaluarExpresion(expresion);
-            printf("Expresión: %s\n", expresion);
+            printf("Expresion: %s\n", expresion);
             printf("Resultado: %d\n", resultado);
         }
         fclose(f);
