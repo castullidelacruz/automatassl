@@ -39,21 +39,27 @@ int main(void) {
     return 0;
 }
 
-void procesarPunto3(){
-
+void procesarPunto3() {
     char expresion[100];
     printf("Ingresa una expresion matematica: ");
     fgets(expresion, sizeof(expresion), stdin);
     expresion[strcspn(expresion, "\n")] = '\0';
-    // Validar los números en la expresión como válidos
-    int esValida = esExpresionMatematica(expresion);
-    if (esValida) {
-        int resultado = evaluarExpresion(expresion);
-        printf("El resultado de la expresion es: %d\n", resultado);
-    } else {
-        printf("La expresion matematica ingresada no es valida\n");
+
+    // Separar números y operadores
+    char* token = strtok(expresion, "+-*/");
+    while (token != NULL) {
+        if (!esPalabra(token)) { // Reutilizar función del punto 1
+            printf("Error: La expresión contiene un número inválido: %s\n", token);
+            return;
+        }
+        token = strtok(NULL, "+-*/");
     }
+
+    // Reconstruir la expresión para evaluarla (si es válida)
+    int resultado = evaluarExpresion(expresion);
+    printf("El resultado de la expresion es: %d\n", resultado);
 }
+
 
 // Procesar cadenas del punto 1
 void procesarPunto1() {
@@ -100,44 +106,32 @@ void procesarPunto1() {
 int esPalabra(const char* palabra) {
     int i = 0;
 
-    // Si el número comienza con 0 (octal o hexadecimal)
     if (palabra[0] == '0') {
         if (palabra[1] == 'x' || palabra[1] == 'X') {
-            // Verificar que los caracteres después de "0x" sean válidos en hexadecimal
             for (i = 2; palabra[i] != '\0'; i++) {
                 if (!isxdigit(palabra[i])) {
-                    return 0; // Número inválido, contiene caracteres no válidos
+                    return 0;
                 }
             }
-            cantidadHexa++; // Es hexadecimal
-        } else if (palabra[1] == 'o' || palabra[1] == 'O') {
-            // Verificar que los caracteres después de "0o" sean válidos en octal
-            for (i = 2; palabra[i] != '\0'; i++) {
-                if (palabra[i] < '0' || palabra[i] > '7') {
-                    return 0; // Número inválido, contiene caracteres no válidos en octal
-                }
-            }
-            cantidadOctales++; // Es octal
+            cantidadHexa++;
         } else {
-            // Si comienza con 0 pero no es "0x" o "0o", es decimal
             for (i = 1; palabra[i] != '\0'; i++) {
-                if (!isdigit(palabra[i])) {
-                    return 0; // Número inválido, contiene caracteres no válidos
+                if (palabra[i] < '0' || palabra[i] > '7') {
+                    return 0;
                 }
             }
-            cantidadDecimales++; // Es decimal
+            cantidadOctales++;
         }
     } else {
-        // Si no comienza con 0, es un número decimal normal
         for (i = 0; palabra[i] != '\0'; i++) {
             if (!isdigit(palabra[i])) {
-                return 0; // Número inválido, contiene caracteres no válidos
+                return 0;
             }
         }
-        cantidadDecimales++; // Es decimal
+        cantidadDecimales++;
     }
 
-    return 1; // Es un número válido
+    return 1;
 }
 
 
@@ -178,51 +172,79 @@ int esExpresionMatematica(const char* expresion) {
     // La expresión debe terminar con un número, no un operador
     return tieneNumero; 
 }
-// Evaluar una expresión matemática respetando la precedencia de operadores
-int evaluarExpresion(const char* expresion) {
-    int longitud = strlen(expresion);
-    int numeros[100]; // Array para almacenar números
-    char operadores[100]; // Array para almacenar operadores
-    int numIndex = 0, opIndex = 0;
-    int numero = 0;
-    char operador = '+'; // Operador inicial
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
 
-    // Paso 1: Evaluar * y / primero (multiplicación y división)
-    for (int i = 0; i < longitud; i++) {
+// Función para determinar la precedencia de un operador
+int precedencia(char operador) {
+    if (operador == '*' || operador == '/') return 2;
+    if (operador == '+' || operador == '-') return 1;
+    return 0;
+}
+
+// Función para realizar una operación matemática básica
+int operar(int a, int b, char operador) {
+    switch (operador) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': 
+            if (b == 0) {
+                printf("Error: División por cero\n");
+                return 0;
+            }
+            return a / b;
+        default: return 0;
+    }
+}
+
+// Función para evaluar una expresión matemática respetando la precedencia
+int evaluarExpresion(const char* expresion) {
+    int numeros[100], numTop = -1;
+    char operadores[100];
+    int opTop = -1;
+    int i = 0, numero = 0, leyendoNumero = 0;
+
+    while (expresion[i] != '\0') {
         char c = expresion[i];
 
         if (isdigit(c)) {
             numero = numero * 10 + (c - '0'); // Construir número
-        }
-
-        // Cuando encontramos un operador o llegamos al final
-        if ((!isdigit(c) && c != ' ') || i == longitud - 1) {
-            if (operador == '+') {
-                numeros[numIndex++] = numero;
-            } else if (operador == '-') {
-                numeros[numIndex++] = -numero;
-            } else if (operador == '*') {
-                numeros[numIndex - 1] *= numero; // Resolver multiplicación
-            } else if (operador == '/') {
-                if (numero == 0) {
-                    printf("Error: División por cero\n");
-                    return 0;
-                }
-                numeros[numIndex - 1] /= numero; // Resolver división
+            leyendoNumero = 1;
+        } else {
+            if (leyendoNumero) {
+                numeros[++numTop] = numero; // Guardar número en la pila
+                numero = 0;
+                leyendoNumero = 0;
             }
-
-            operador = c;
-            numero = 0;
+            if (c == '+' || c == '-' || c == '*' || c == '/') {
+                // Procesar operadores en la pila mientras tengan mayor o igual precedencia
+                while (opTop >= 0 && precedencia(operadores[opTop]) >= precedencia(c)) {
+                    int b = numeros[numTop--];
+                    int a = numeros[numTop--];
+                    char op = operadores[opTop--];
+                    numeros[++numTop] = operar(a, b, op);
+                }
+                operadores[++opTop] = c; // Guardar operador actual en la pila
+            }
         }
+        i++;
     }
 
-    // Paso 2: Resolver + y - (suma y resta)
-    int resultado = 0;
-    for (int i = 0; i < numIndex; i++) {
-        resultado += numeros[i]; // Sumar o restar los resultados
+    if (leyendoNumero) {
+        numeros[++numTop] = numero; // Guardar el último número
     }
 
-    return resultado;
+    // Procesar los operadores restantes en la pila
+    while (opTop >= 0) {
+        int b = numeros[numTop--];
+        int a = numeros[numTop--];
+        char op = operadores[opTop--];
+        numeros[++numTop] = operar(a, b, op);
+    }
+
+    return numeros[0]; // El resultado final está en la parte superior de la pila
 }
 
 void mostrarCaracterConvertido(char c) {
