@@ -18,6 +18,7 @@ int evaluarExpresion(const char* expresion);
 int esExpresionMatematica(const char* expresion);
 int convertirCaracter(char c);
 void mostrarCaracterConvertido(char c);
+void procesarPunto3();
 
 int main(void) {
     int opcion;
@@ -30,25 +31,28 @@ int main(void) {
     if (opcion == 1) {
         procesarPunto1();
     } else if (opcion == 2) {
-        char expresion[100];
-        printf("Ingresa una expresion matematica: ");
-        fgets(expresion, sizeof(expresion), stdin);
-        expresion[strcspn(expresion, "\n")] = '\0';
-
-        // Validar los números en la expresión como válidos
-        int esValida = esExpresionMatematica(expresion);
-        
-        if (esValida) {
-            int resultado = evaluarExpresion(expresion);
-            printf("El resultado de la expresion es: %d\n", resultado);
-        } else {
-            printf("La expresion matematica ingresada no es valida\n");
-        }
+        procesarPunto3();
     } else {
         printf("Opcion incorrecta\n");
     }
 
     return 0;
+}
+
+void procesarPunto3(){
+
+    char expresion[100];
+    printf("Ingresa una expresion matematica: ");
+    fgets(expresion, sizeof(expresion), stdin);
+    expresion[strcspn(expresion, "\n")] = '\0';
+    // Validar los números en la expresión como válidos
+    int esValida = esExpresionMatematica(expresion);
+    if (esValida) {
+        int resultado = evaluarExpresion(expresion);
+        printf("El resultado de la expresion es: %d\n", resultado);
+    } else {
+        printf("La expresion matematica ingresada no es valida\n");
+    }
 }
 
 // Procesar cadenas del punto 1
