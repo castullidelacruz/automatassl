@@ -54,7 +54,7 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NUMBER = 258                   /* NUMBER  */
+    DECIMAL = 258                  /* DECIMAL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -63,15 +63,15 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define NUMBER 258
+#define DECIMAL 258
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "analizadorsintactico.y"
+#line 13 "analizadorsintactico.y"
 
-    float fval;  // Para manejar números decimales
+    float valor;  
 
 #line 77 "y.tab.h"
 

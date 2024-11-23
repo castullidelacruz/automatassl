@@ -76,9 +76,10 @@
 void yyerror(const char *s);
 int yylex(void);
 
+int validar_division(float divisor);
+int convertir_a_entero(float resultado);
 
-
-#line 82 "y.tab.c"
+#line 83 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -122,7 +123,7 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NUMBER = 258                   /* NUMBER  */
+    DECIMAL = 258                  /* DECIMAL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -131,17 +132,17 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define NUMBER 258
+#define DECIMAL 258
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "analizadorsintactico.y"
+#line 13 "analizadorsintactico.y"
 
-    float fval;  // Para manejar números decimales
+    float valor;  
 
-#line 145 "y.tab.c"
+#line 146 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -164,7 +165,7 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
-  YYSYMBOL_NUMBER = 3,                     /* NUMBER  */
+  YYSYMBOL_DECIMAL = 3,                    /* DECIMAL  */
   YYSYMBOL_4_ = 4,                         /* '='  */
   YYSYMBOL_5_ = 5,                         /* '+'  */
   YYSYMBOL_6_ = 6,                         /* '-'  */
@@ -562,8 +563,8 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    22,    22,    23,    26,    27,    28,    31,    32,    33,
-      36,    37
+       0,    23,    23,    24,    31,    32,    33,    36,    37,    44,
+      47,    48
 };
 #endif
 
@@ -579,9 +580,9 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "NUMBER", "'='", "'+'",
-  "'-'", "'*'", "'/'", "'('", "')'", "$accept", "input", "expr", "term",
-  "factor", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "DECIMAL", "'='",
+  "'+'", "'-'", "'*'", "'/'", "'('", "')'", "$accept", "input", "expr",
+  "term", "factor", YY_NULLPTR
 };
 
 static const char *
@@ -1130,55 +1131,65 @@ yyreduce:
   switch (yyn)
     {
   case 3: /* input: input expr '='  */
-#line 23 "analizadorsintactico.y"
-                     { printf("El resultado es: %f\n", (yyvsp[-1].fval)); }
-#line 1136 "y.tab.c"
+#line 24 "analizadorsintactico.y"
+                     { 
+        printf("El resultado es: %f\n", (yyvsp[-1].valor)); 
+        int resultado_entero = convertir_a_entero((yyvsp[-1].valor));
+        printf("El resultado convertido a entero es: %d\n", resultado_entero);
+    }
+#line 1141 "y.tab.c"
     break;
 
   case 4: /* expr: expr '+' term  */
-#line 26 "analizadorsintactico.y"
-                      { (yyval.fval) = (yyvsp[-2].fval) + (yyvsp[0].fval); }
-#line 1142 "y.tab.c"
+#line 31 "analizadorsintactico.y"
+                      { (yyval.valor) = (yyvsp[-2].valor) + (yyvsp[0].valor); }
+#line 1147 "y.tab.c"
     break;
 
   case 5: /* expr: expr '-' term  */
-#line 27 "analizadorsintactico.y"
-                    { (yyval.fval) = (yyvsp[-2].fval) - (yyvsp[0].fval); }
-#line 1148 "y.tab.c"
+#line 32 "analizadorsintactico.y"
+                    { (yyval.valor) = (yyvsp[-2].valor) - (yyvsp[0].valor); }
+#line 1153 "y.tab.c"
     break;
 
   case 6: /* expr: term  */
-#line 28 "analizadorsintactico.y"
-           { (yyval.fval) = (yyvsp[0].fval); }
-#line 1154 "y.tab.c"
+#line 33 "analizadorsintactico.y"
+           { (yyval.valor) = (yyvsp[0].valor); }
+#line 1159 "y.tab.c"
     break;
 
   case 7: /* term: term '*' factor  */
-#line 31 "analizadorsintactico.y"
-                        { (yyval.fval) = (yyvsp[-2].fval) * (yyvsp[0].fval); }
-#line 1160 "y.tab.c"
+#line 36 "analizadorsintactico.y"
+                        { (yyval.valor) = (yyvsp[-2].valor) * (yyvsp[0].valor); }
+#line 1165 "y.tab.c"
     break;
 
   case 8: /* term: term '/' factor  */
-#line 32 "analizadorsintactico.y"
-                      { (yyval.fval) = (yyvsp[-2].fval) / (yyvsp[0].fval); }
-#line 1166 "y.tab.c"
+#line 37 "analizadorsintactico.y"
+                      { 
+        if (validar_division((yyvsp[0].valor))) {
+            (yyval.valor) = (yyvsp[-2].valor) / (yyvsp[0].valor);
+        } else {
+            yyerror("Division por cero");
+            (yyval.valor) = 0; //devuelve cero para poder continuar el analsis
+        } }
+#line 1177 "y.tab.c"
     break;
 
   case 9: /* term: factor  */
-#line 33 "analizadorsintactico.y"
-             { (yyval.fval) = (yyvsp[0].fval); }
-#line 1172 "y.tab.c"
+#line 44 "analizadorsintactico.y"
+             { (yyval.valor) = (yyvsp[0].valor); }
+#line 1183 "y.tab.c"
     break;
 
   case 11: /* factor: '(' expr ')'  */
-#line 37 "analizadorsintactico.y"
-                   { (yyval.fval) = (yyvsp[-1].fval); }
-#line 1178 "y.tab.c"
+#line 48 "analizadorsintactico.y"
+                   { (yyval.valor) = (yyvsp[-1].valor); }
+#line 1189 "y.tab.c"
     break;
 
 
-#line 1182 "y.tab.c"
+#line 1193 "y.tab.c"
 
       default: break;
     }
@@ -1371,18 +1382,26 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 40 "analizadorsintactico.y"
+#line 51 "analizadorsintactico.y"
 
 
 int main() {
-    printf("Iniciando analisis sintactico...\n");
+    printf("Ingresa operacion matematica: \n");
      
         yyparse();
 
-    printf("Analisis sintactico completado.\n");
     return 0;
 }
 
 void yyerror(const char *s) {
     fprintf(stderr, "Error sintactico: %s\n", s);
+}
+
+int validar_division(float divisor) {
+    return divisor != 0;
+}
+
+int convertir_a_entero(float resultado) {
+    // Convierte un decimal a entero truncando los decimales
+    return (int) resultado;
 }
