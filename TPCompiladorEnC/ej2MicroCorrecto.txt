@@ -1,0 +1,10 @@
+// Programa correcto
+inicio
+    int a, b, suma
+    escribir "Ingrese el primer número:"
+    leer a
+    escribir "Ingrese el segundo número:"
+    leer b
+    suma <- a + b
+    escribir "La suma es: ", suma
+fin

@@ -1,0 +1,10 @@
+// Programa con error lexico
+inicio
+    int a, b, @suma  // Error léxico: "@suma" no es un identificador válido
+    escribir "Ingrese el primer número:"
+    lee a  // Error léxico: "LEE" no es una palabra reservada válida
+    escribir "Ingrese el segundo número:"
+    leer b
+    @suma <- a + b
+    escribir "La suma es: ", @suma
+fin
