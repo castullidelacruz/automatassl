@@ -1,9 +1,11 @@
-#include <stdio.h>
+#include<stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <ctype.h>
 
 // ER: ([1-9][0-9]* | 0(\.[0-9]+)?) | 0([0-7]+) | 0[xX]([0-9a-fA-F]+)
 
+// Variables globales para contar cantidades
 int cantidadDecimales = 0;
 int cantidadOctales = 0;
 int cantidadHexa = 0;
@@ -15,52 +17,11 @@ int imprimirCantidad();
 int convertirCaracter();
 
 int main(void){
-    char cadena[100];
-	int opcion = 0;
-
-	printf("Ingresar 1 para entrada de cadena por consola");
-	printf("Ingresa 2 para leer cadena desde archivo \n");
-	scanf("%d",&opcion);
-	if (opcion == 1){
-		printf("ingresa una cadena %s",cadena);
-		scanf("%99s",cadena);
-		char* palabra = strtok(cadena,"#");
-		while (palabra != NULL)
-		{
-			verifica(palabra);
-			esPalabra(palabra);
-			palabra = strtok(NULL,"#");
-		}
-
-		imprimirCantidad();
-		getchar();
-	} else if (opcion ==2){
-
-		FILE* f = fopen("cadenaprueba.txt","r");
-
-		while (fgets(cadena, sizeof(cadena), f) != NULL) {
-            cadena[strcspn(cadena, "\n")] = '\0';
-            char* palabra = strtok(cadena,"#");
-			while (palabra != NULL)
-			{
-				verifica(palabra);
-				esPalabra(palabra);
-				palabra = strtok(NULL,"#");
-			}
-        }
-        fclose(f);
-
-		imprimirCantidad();
-
-	} else {
-		printf("Opcion incorrecta");
-	}
-
-	convertirCaracter();
-//	printf("El valor ingresado es: %i", entero);
 
     return 0;
 }
+
+
 
 int imprimirCantidad(){
 	printf("La cantidad de decimales es: %i \n", cantidadDecimales);
