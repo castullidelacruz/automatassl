@@ -1,0 +1,11 @@
+// Programa con error semantico y sintactico
+inicio
+    int a, b
+    cadena resultado
+    escribir "Ingrese el primer número:"
+    leer a
+    escribir "Ingrese el segundo número:"
+    leer b
+    resultado = a + "texto"  // Error semántico: suma de tipos incompatibles
+    escribir "El resultado es: ", resultado
+fin
