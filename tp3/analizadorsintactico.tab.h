@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
+#ifndef YY_YY_ANALIZADORSINTACTICO_TAB_H_INCLUDED
+# define YY_YY_ANALIZADORSINTACTICO_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -67,7 +67,7 @@ union YYSTYPE
 
     float valor;
 
-#line 71 "y.tab.h"
+#line 71 "analizadorsintactico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -82,4 +82,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+#endif /* !YY_YY_ANALIZADORSINTACTICO_TAB_H_INCLUDED  */

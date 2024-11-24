@@ -83,7 +83,7 @@ int es_entero(float numero);
 int convertir_a_entero(float resultado);
 int validar_division(float divisor);
 
-#line 87 "y.tab.c"
+#line 87 "analizadorsintactico.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -106,56 +106,7 @@ int validar_division(float divisor);
 #  endif
 # endif
 
-/* Use api.header.include to #include this header
-   instead of duplicating it here.  */
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
-
-/* Token kinds.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    DECIMAL = 258                  /* DECIMAL  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
-#endif
-
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 17 "analizadorsintactico.y"
-
-    float valor;
-
-#line 144 "y.tab.c"
-
-};
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
-#endif
-
-
-extern YYSTYPE yylval;
-
-
-int yyparse (void);
-
-
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+#include "analizadorsintactico.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1158,7 +1109,7 @@ yyreduce:
         int resultado_entero = convertir_a_entero((yyvsp[-1].valor));
         printf("El resultado convertido a entero es: %d\n", resultado_entero);
     }
-#line 1162 "y.tab.c"
+#line 1113 "analizadorsintactico.tab.c"
     break;
 
   case 5: /* expr: expr '+' term  */
@@ -1167,7 +1118,7 @@ yyreduce:
             (yyval.valor) = (yyvsp[-2].valor) + (yyvsp[0].valor); 
             printf("[DEBUG] Suma: %f + %f = %f\n", (yyvsp[-2].valor), (yyvsp[0].valor), (yyval.valor));
         }
-#line 1171 "y.tab.c"
+#line 1122 "analizadorsintactico.tab.c"
     break;
 
   case 6: /* expr: expr '-' term  */
@@ -1176,13 +1127,13 @@ yyreduce:
             (yyval.valor) = (yyvsp[-2].valor) - (yyvsp[0].valor); 
             printf("[DEBUG] Resta: %f - %f = %f\n", (yyvsp[-2].valor), (yyvsp[0].valor), (yyval.valor));
         }
-#line 1180 "y.tab.c"
+#line 1131 "analizadorsintactico.tab.c"
     break;
 
   case 7: /* expr: term  */
 #line 66 "analizadorsintactico.y"
            { (yyval.valor) = (yyvsp[0].valor); }
-#line 1186 "y.tab.c"
+#line 1137 "analizadorsintactico.tab.c"
     break;
 
   case 8: /* term: term '*' factor  */
@@ -1191,7 +1142,7 @@ yyreduce:
             (yyval.valor) = (yyvsp[-2].valor) * (yyvsp[0].valor); 
             printf("[DEBUG] Multiplicación: %f * %f = %f\n", (yyvsp[-2].valor), (yyvsp[0].valor), (yyval.valor));
         }
-#line 1195 "y.tab.c"
+#line 1146 "analizadorsintactico.tab.c"
     break;
 
   case 9: /* term: term '/' factor  */
@@ -1205,29 +1156,29 @@ yyreduce:
                 (yyval.valor) = 0;  // Evitar propagación de errores
             }
         }
-#line 1209 "y.tab.c"
+#line 1160 "analizadorsintactico.tab.c"
     break;
 
   case 10: /* term: factor  */
 #line 82 "analizadorsintactico.y"
              { (yyval.valor) = (yyvsp[0].valor); }
-#line 1215 "y.tab.c"
+#line 1166 "analizadorsintactico.tab.c"
     break;
 
   case 11: /* factor: DECIMAL  */
 #line 85 "analizadorsintactico.y"
                 { (yyval.valor) = (yyvsp[0].valor); }
-#line 1221 "y.tab.c"
+#line 1172 "analizadorsintactico.tab.c"
     break;
 
   case 12: /* factor: '(' expr ')'  */
 #line 86 "analizadorsintactico.y"
                    { (yyval.valor) = (yyvsp[-1].valor); }
-#line 1227 "y.tab.c"
+#line 1178 "analizadorsintactico.tab.c"
     break;
 
 
-#line 1231 "y.tab.c"
+#line 1182 "analizadorsintactico.tab.c"
 
       default: break;
     }

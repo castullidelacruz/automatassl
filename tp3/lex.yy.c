@@ -1,5 +1,5 @@
 
-#line 3 "lex.yy.c"
+#line 2 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -444,6 +444,7 @@ char *yytext;
 #line 1 "analizadorlexico.l"
 #line 2 "analizadorlexico.l"
 #include "y.tab.h"
+#include <stdio.h>
 
 void yyerror(const char *s);
 #line 450 "lex.yy.c"
@@ -664,7 +665,7 @@ YY_DECL
 		}
 
 	{
-#line 7 "analizadorlexico.l"
+#line 8 "analizadorlexico.l"
 
 
 #line 671 "lex.yy.c"
@@ -726,25 +727,35 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 9 "analizadorlexico.l"
-{ yylval.valor = atof(yytext); return DECIMAL; } 
+#line 10 "analizadorlexico.l"
+{
+    printf("[DEBUG] Token DECIMAL reconocido: %s\n", yytext);
+    yylval.valor = atof(yytext); 
+    return DECIMAL; 
+}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 10 "analizadorlexico.l"
-{ return *yytext; }
+#line 16 "analizadorlexico.l"
+{
+    printf("[DEBUG] Operador reconocido: %c\n", *yytext);
+    return *yytext; 
+}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 12 "analizadorlexico.l"
-{ yyerror("NO RECONOCIDO\n"); }
+#line 21 "analizadorlexico.l"
+{
+    printf("[DEBUG] Caracter no reconocido: %s\n", yytext);
+    yyerror("NO RECONOCIDO\n");
+}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 14 "analizadorlexico.l"
+#line 26 "analizadorlexico.l"
 ECHO;
 	YY_BREAK
-#line 748 "lex.yy.c"
+#line 758 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1749,10 +1760,10 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 14 "analizadorlexico.l"
+#line 26 "analizadorlexico.l"
 
 
 int yywrap() {
-    return 1;
+    return 0;  // Permite continuar leyendo entradas
 }
 
