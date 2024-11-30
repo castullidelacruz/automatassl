@@ -1,11 +1,8 @@
 // Programa con error semantico y sintactico
 inicio
-    int a, b
-    cadena resultado
-    escribir "Ingrese el primer número:"
-    leer a
-    escribir "Ingrese el segundo número:"
-    leer b
-    resultado = a + "texto"  // Error semántico: suma de tipos incompatibles
-    escribir "El resultado es: ", resultado
+    int a,b,suma;
+    leer a;
+    leer (b);
+    suma := a + b;
+    escribir (a, b)
 fin

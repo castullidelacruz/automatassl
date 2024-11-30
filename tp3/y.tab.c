@@ -131,6 +131,12 @@ extern int yydebug;
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
+/* Token kinds.  */
+#define YYEMPTY -2
+#define YYEOF 0
+#define YYerror 256
+#define YYUNDEF 257
+#define DECIMAL 258
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -140,7 +146,7 @@ union YYSTYPE
 
     float valor;
 
-#line 144 "y.tab.c"
+#line 150 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -1158,7 +1164,7 @@ yyreduce:
         int resultado_entero = convertir_a_entero((yyvsp[-1].valor));
         printf("El resultado convertido a entero es: %d\n", resultado_entero);
     }
-#line 1162 "y.tab.c"
+#line 1168 "y.tab.c"
     break;
 
   case 5: /* expr: expr '+' term  */
@@ -1167,7 +1173,7 @@ yyreduce:
             (yyval.valor) = (yyvsp[-2].valor) + (yyvsp[0].valor); 
             printf("[DEBUG] Suma: %f + %f = %f\n", (yyvsp[-2].valor), (yyvsp[0].valor), (yyval.valor));
         }
-#line 1171 "y.tab.c"
+#line 1177 "y.tab.c"
     break;
 
   case 6: /* expr: expr '-' term  */
@@ -1176,13 +1182,13 @@ yyreduce:
             (yyval.valor) = (yyvsp[-2].valor) - (yyvsp[0].valor); 
             printf("[DEBUG] Resta: %f - %f = %f\n", (yyvsp[-2].valor), (yyvsp[0].valor), (yyval.valor));
         }
-#line 1180 "y.tab.c"
+#line 1186 "y.tab.c"
     break;
 
   case 7: /* expr: term  */
 #line 66 "analizadorsintactico.y"
            { (yyval.valor) = (yyvsp[0].valor); }
-#line 1186 "y.tab.c"
+#line 1192 "y.tab.c"
     break;
 
   case 8: /* term: term '*' factor  */
@@ -1191,7 +1197,7 @@ yyreduce:
             (yyval.valor) = (yyvsp[-2].valor) * (yyvsp[0].valor); 
             printf("[DEBUG] Multiplicación: %f * %f = %f\n", (yyvsp[-2].valor), (yyvsp[0].valor), (yyval.valor));
         }
-#line 1195 "y.tab.c"
+#line 1201 "y.tab.c"
     break;
 
   case 9: /* term: term '/' factor  */
@@ -1205,29 +1211,29 @@ yyreduce:
                 (yyval.valor) = 0;  // Evitar propagación de errores
             }
         }
-#line 1209 "y.tab.c"
+#line 1215 "y.tab.c"
     break;
 
   case 10: /* term: factor  */
 #line 82 "analizadorsintactico.y"
              { (yyval.valor) = (yyvsp[0].valor); }
-#line 1215 "y.tab.c"
+#line 1221 "y.tab.c"
     break;
 
   case 11: /* factor: DECIMAL  */
 #line 85 "analizadorsintactico.y"
                 { (yyval.valor) = (yyvsp[0].valor); }
-#line 1221 "y.tab.c"
+#line 1227 "y.tab.c"
     break;
 
   case 12: /* factor: '(' expr ')'  */
 #line 86 "analizadorsintactico.y"
                    { (yyval.valor) = (yyvsp[-1].valor); }
-#line 1227 "y.tab.c"
+#line 1233 "y.tab.c"
     break;
 
 
-#line 1231 "y.tab.c"
+#line 1237 "y.tab.c"
 
       default: break;
     }

@@ -1,0 +1,23 @@
+correcciones realizadas al programa para que sea correcto lexicamente:
+
+En el ejemplo lexicamente correcto corregimos:
+No se declara el tipo por ser implicito.
+Según la gramática los identificadores comienzan con letra y pueden ser seguido de digito o letra (B1)
+Corregimos por el correcto operador de asignacion.
+La lista de expresiones dentro del leer va entre paréntesis.
+
+El programa correcto pide dos valores que almacena en las variables utilizando "leer", luego realiza la suma de los valores de esta variable y las asigna a suma.
+Finalmente implime el valor de la variable suma seguido del valor de la variable "A".
+
+Errores de lexicamente incorrecto:
+
+Según la gramática los identificadores comienzan con letra y pueden ser seguido de digito o letra. 
+Es un error que el primer caracter sea un digito u algún caracter que no sea letra ("3valor", "@suma").
+
+Ejemplo con error sintáctico y semántico:
+Declarar el tipo de dato entero es un error semántico debido a que en micro los identificadores se declaran implicitamente.
+Error sintáctico debido a que lista de expresiones dentro del leer va entre paréntesis.
+Es un error sintactico si una sentencia no termina en ";"
+
+
+

@@ -1,10 +1,10 @@
 // Programa correcto
 inicio
-    int a, b, suma
-    escribir "Ingrese el primer número:"
-    leer a
-    escribir "Ingrese el segundo número:"
-    leer b
-    suma <- a + b
-    escribir "La suma es: ", suma
+    leer (A);            
+    leer (B1);           
+    suma := A + B1 - (10 * 2);      
+    escribir (suma, A);
 fin
+
+
+

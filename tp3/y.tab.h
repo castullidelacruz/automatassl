@@ -58,6 +58,12 @@ extern int yydebug;
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
+/* Token kinds.  */
+#define YYEMPTY -2
+#define YYEOF 0
+#define YYerror 256
+#define YYUNDEF 257
+#define DECIMAL 258
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -67,7 +73,7 @@ union YYSTYPE
 
     float valor;
 
-#line 71 "y.tab.h"
+#line 77 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
